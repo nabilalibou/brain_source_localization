@@ -35,3 +35,8 @@ Gibbs sampler but will be by the 2 others).
 - Using the vector *s* (19k x 1), we can map the 3D figure (surface of the brain with a localization criterion and a 
 gray level criterion).
 
+# Gibbs Sampler
+
+The Markov chain Monte Carlo method is one of a class of sampling methods based on probability distributions. 
+The idea is to generate a sequence of samples where each sample depends uniquely on the preceding sample (we would like 
+to ensure that if the preceding sample is accepted, then the second sample generated is close to the one just accepted).
