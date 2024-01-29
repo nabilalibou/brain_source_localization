@@ -27,7 +27,7 @@ criterion.
 <img src="doc\source_original.png" width="382" height="274">
 </p>
 <div align="center">Figure 1: Visualization of the 2 active sources.</div>
-
+<br/>
 
 The problem is under-determined as the number of parameters to estimate is greater than the number of measurements. 
 In such settings, several different source configurations can explain the experimental data and additional constraints 
@@ -68,7 +68,7 @@ times can be seen in [Fig. 2](#fig2):
 <img src="doc\snr_impact_gibbs.png" width="1102" height="252">
 </p>
 <div align="center">Figure 2: Influence of SNR on the Gibbs sampler.</div>
-
+<br/>
 
 The Gibbs sampler is a good way to estimate the parameters of a target distribution and gives correct results and is 
 relatively close to the truth, but it is very sensitive to noise and cannot be used if the noise is too dominant.
@@ -110,7 +110,7 @@ We implement the algorithm and display ([Fig. 3](#fig3)) the results as a functi
 <img src="doc\MNE.png" width="618" height="540">
 </p>
 <div align="center">Figure 3: MNE algorithm implementation.</div>
-
+<br/>
 
 The higher the signal-to-noise ratio, the closer the solution is to the truth. In addition, the higher the 
 regularization parameter, the more the constraint is taken into account, and therefore the source foci are more and 
@@ -130,7 +130,7 @@ can see.
 <img src="doc\lambda_determination.png" width="719" height="279">
 </p>
 <div align="center">Figure 4: Lambda determination.</div>
-
+<br/>
 
 **L-curve criterion**: This corresponds to the graph of the residual norm (the construction error) as a function of 
 the solution norm varying with lambda. The curve then takes a L-shape where the "abrupt" parts correspond to a dominant 
@@ -168,7 +168,7 @@ accelerate its convergence, we introduce the multipliers of the augmented Lagran
 <img src="doc\sissy_lambda_impact.png" width="450" height="620">
 </p>
 <div align="center">Figure 5: Lambda influence.</div>
-
+<br/>
 
 Unlike the first regularization, the solution is more sparse and the source is more concentrated. 
 However, it dissolves over time as the regularization parameter increases after a certain value.
@@ -181,7 +181,7 @@ However, it dissolves over time as the regularization parameter increases after 
 <img src="doc\sissy_alpha_impact.png" width="577" height="594">
 </p>
 <div align="center">Figure 6: Alpha influence.</div>
-
+<br/>
 
 We see that regularization with the L1 norm reflects the parsimonious character of the solution well. 
 The higher alpha, the smaller the source area becomes. It seems that the fact of not applying any operator to s in the L1 
@@ -196,7 +196,7 @@ reality than the regularization of type L2 norm. The good choices of parameters 
 <img src="doc\lambda_determination2.png" width="568" height="328">
 </p>
 <div align="center">Figure 7: Lambda determination.</div>
-
+<br/>
 
 [Fig. 7](#fig7) shows the measure of the sparsity of a vector is given by the L0 semi-norm. This norm is not taken into account in 
 regularization because it leads to optimization problems that are very costly in terms of computational time. 
@@ -222,7 +222,7 @@ variance, etc.). The comparison of the algorithms will be done qualitatively and
 <img src="doc\comparison_3_algo_with_noise.png" width="597" height="600">
 </p>
 <div align="center">Figure 8: Analysis of the 3 algorithms with Gaussian noise.</div>
-
+<br/>
 
 [Fig. 8](#fig8) we can observe that the Gibbs sampler is very sensitive to noise. In fact, its convergence speed tends 
 to infinity as the SNR decreases. In conclusion, if the SNR is not sufficiently high, the results of Gibbs are not usable.
@@ -242,7 +242,7 @@ even with a low SNR, the results are more physiologically realistic.
 <img src="doc\comparison_3_algo_with_corr_noise.png" width="609" height="592">
 </p>
 <div align="center">Figure 9: Analysis of the 3 algorithms with spatially correlated Gaussian noise.</div>
-
+<br/>
 
 [Fig. 9](#fig9) corresponds to a type of noise models Gaussian activity of dipoles that do not correspond to the sources, 
 called background activity. Gibbs is less sensitive to this type of noise, it converges more easily to correct estimators. 
