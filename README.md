@@ -33,6 +33,7 @@ Figure 1: Visualization of the 2 active sources.
 </em>
 </center>
 
+
 The problem is under-determined as the number of parameters to estimate is greater than the number of measurements. 
 In such settings, several different source configurations can explain the experimental data and additional constraints 
 are needed to provide a sound solution. To tackle this problem, we need to use a priori knowledge on the characteristics 
@@ -77,6 +78,7 @@ times can be seen in [Fig. 2](#fig2):
 Figure 2: Influence of SNR on the Gibbs sampler.
 </em>
 </center>
+
 
 The Gibbs sampler is a good way to estimate the parameters of a target distribution and gives correct results and is 
 relatively close to the truth, but it is very sensitive to noise and cannot be used if the noise is too dominant.
@@ -124,6 +126,7 @@ Figure 3: MNE algorithm implementation.
 </em>
 </center>
 
+
 The higher the signal-to-noise ratio, the closer the solution is to the truth. In addition, the higher the 
 regularization parameter, the more the constraint is taken into account, and therefore the source foci are more and 
 more evident. However, although this algorithm gives interesting results, it is observed that when the parameter is 
@@ -147,6 +150,7 @@ can see.
 Figure 4: Lambda determination.
 </em>
 </center>
+
 
 **L-curve criterion**: This corresponds to the graph of the residual norm (the construction error) as a function of 
 the solution norm varying with lambda. The curve then takes a L-shape where the "abrupt" parts correspond to a dominant 
@@ -190,6 +194,7 @@ Figure 5: Lambda influence.
 </em>
 </center>
 
+
 Unlike the first regularization, the solution is more sparse and the source is more concentrated. 
 However, it dissolves over time as the regularization parameter increases after a certain value.
 
@@ -206,6 +211,7 @@ However, it dissolves over time as the regularization parameter increases after 
 Figure 6: Alpha influence.
 </em>
 </center>
+
 
 We see that regularization with the L1 norm reflects the parsimonious character of the solution well. 
 The higher alpha, the smaller the source area becomes. It seems that the fact of not applying any operator to s in the L1 
@@ -225,6 +231,7 @@ reality than the regularization of type L2 norm. The good choices of parameters 
 Figure 7: Lambda determination.
 </em>
 </center>
+
 
 [Fig. 7](#fig7) shows the measure of the sparsity of a vector is given by the L0 semi-norm. This norm is not taken into account in 
 regularization because it leads to optimization problems that are very costly in terms of computational time. 
@@ -256,6 +263,7 @@ Figure 8: Analysis of the 3 algorithms with Gaussian noise.
 </em>
 </center>
 
+
 [Fig. 8](#fig8) we can observe that the Gibbs sampler is very sensitive to noise. In fact, its convergence speed tends 
 to infinity as the SNR decreases. In conclusion, if the SNR is not sufficiently high, the results of Gibbs are not usable.
 
@@ -279,6 +287,7 @@ even with a low SNR, the results are more physiologically realistic.
 Figure 9: Analysis of the 3 algorithms with spatially correlated Gaussian noise.
 </em>
 </center>
+
 
 [Fig. 9](#fig9) corresponds to a type of noise models Gaussian activity of dipoles that do not correspond to the sources, 
 called background activity. Gibbs is less sensitive to this type of noise, it converges more easily to correct estimators. 
