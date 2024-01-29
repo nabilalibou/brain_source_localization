@@ -26,7 +26,7 @@ criterion.
 <p align="center">
 <img src="doc\source_original.png" width="382" height="274">
 </p>
-<p style="text-align: center;">Figure 1: Visualization of the 2 active sources.</p>
+<div align="center">Figure 1: Visualization of the 2 active sources.</div>
 
 
 The problem is under-determined as the number of parameters to estimate is greater than the number of measurements. 
@@ -67,7 +67,7 @@ times can be seen in [Fig. 2](#fig2):
 <p align="center">
 <img src="doc\snr_impact_gibbs.png" width="1102" height="252">
 </p>
-<p style="text-align: center;">Figure 2: Influence of SNR on the Gibbs sampler.</p>
+<div align="center">Figure 2: Influence of SNR on the Gibbs sampler.</div>
 
 
 The Gibbs sampler is a good way to estimate the parameters of a target distribution and gives correct results and is 
@@ -109,7 +109,7 @@ We implement the algorithm and display ([Fig. 3](#fig3)) the results as a functi
 <p align="center">
 <img src="doc\MNE.png" width="618" height="540">
 </p>
-<p style="text-align: center;">Figure 3: MNE algorithm implementation.</p>
+<div align="center">Figure 3: MNE algorithm implementation.</div>
 
 
 The higher the signal-to-noise ratio, the closer the solution is to the truth. In addition, the higher the 
@@ -129,7 +129,7 @@ can see.
 <p align="center">
 <img src="doc\lambda_determination.png" width="719" height="279">
 </p>
-<p style="text-align: center;">Figure 4: Lambda determination.</p>
+<div align="center">Figure 4: Lambda determination.</div>
 
 
 **L-curve criterion**: This corresponds to the graph of the residual norm (the construction error) as a function of 
@@ -167,7 +167,7 @@ accelerate its convergence, we introduce the multipliers of the augmented Lagran
 <p align="center">
 <img src="doc\sissy_lambda_impact.png" width="450" height="620">
 </p>
-<p style="text-align: center;">Figure 5: Lambda influence.</p>
+<div align="center">Figure 5: Lambda influence.</div>
 
 
 Unlike the first regularization, the solution is more sparse and the source is more concentrated. 
@@ -180,7 +180,7 @@ However, it dissolves over time as the regularization parameter increases after 
 <p align="center">
 <img src="doc\sissy_alpha_impact.png" width="577" height="594">
 </p>
-<p style="text-align: center;">Figure 6: Alpha influence.</p>
+<div align="center">Figure 6: Alpha influence.</div>
 
 
 We see that regularization with the L1 norm reflects the parsimonious character of the solution well. 
@@ -195,7 +195,7 @@ reality than the regularization of type L2 norm. The good choices of parameters 
 <p align="center">
 <img src="doc\lambda_determination2.png" width="568" height="328">
 </p>
-<p style="text-align: center;">Figure 7: Lambda determination.</p>
+<div align="center">Figure 7: Lambda determination.</div>
 
 
 [Fig. 7](#fig7) shows the measure of the sparsity of a vector is given by the L0 semi-norm. This norm is not taken into account in 
@@ -221,7 +221,7 @@ variance, etc.). The comparison of the algorithms will be done qualitatively and
 <p align="center">
 <img src="doc\comparison_3_algo_with_noise.png" width="597" height="600">
 </p>
-<p style="text-align: center;">Figure 8: Analysis of the 3 algorithms with Gaussian noise.</p>
+<div align="center">Figure 8: Analysis of the 3 algorithms with Gaussian noise.</div>
 
 
 [Fig. 8](#fig8) we can observe that the Gibbs sampler is very sensitive to noise. In fact, its convergence speed tends 
@@ -241,7 +241,7 @@ even with a low SNR, the results are more physiologically realistic.
 <p align="center">
 <img src="doc\comparison_3_algo_with_corr_noise.png" width="609" height="592">
 </p>
-<p style="text-align: center;">Figure 9: Analysis of the 3 algorithms with spatially correlated Gaussian noise.</p>
+<div align="center">Figure 9: Analysis of the 3 algorithms with spatially correlated Gaussian noise.</div>
 
 
 [Fig. 9](#fig9) corresponds to a type of noise models Gaussian activity of dipoles that do not correspond to the sources, 
