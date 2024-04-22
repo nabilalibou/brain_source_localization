@@ -151,14 +151,105 @@ This is the result closest to the value of the regularization parameter deduced 
 
 ## Implementing the Source Imaging based on Structured Sparsity (SISSY) algorithm
 
-The second regularization approach for the optimization problem uses the TV-L1 norm. 
-This method is based on dual ascent, which consists of simplifying the primary optimization problem by several 
-sub-optimization problems for which the objective is to have analytical solutions. 
-Treating each term separately and iteratively has given the name alternating method of ADMM.
-We then need to add terms translating these constraints and integrate them into the cost function as a penalty term. 
-In order to take these constraints into account, we add two other Lagrange multipliers
-(we minimize the difference between the terms). Finally, in order to increase the robustness of the method and 
-accelerate its convergence, we introduce the multipliers of the augmented Lagrangians. 
+The second regularization approach for the optimization problem:
+
+$$ \min_{\mathbf{s}} \frac{1}{2} ||\mathbf{x} - \mathbf{A} \mathbf{s}||_2^2 + \lambda ||\mathbf{s}||_2^2 $$ 
+
+uses the TV-L1 norm: 
+
+$$ f(s) = ||\mathbf{T} \mathbf{s}||_1 + \alpha ||\mathbf{s}||_1 $$
+
+**Regularization using the TV-L1 norm**  
+The second regularization approach for the optimization problem: $\min_{\mathbf{s}} \frac{1}{2} ||\mathbf{x} - \mathbf{A} \mathbf{s}||_2^2 + \lambda ||\mathbf{s}||_2^2$ utilizes the TV-L1 norm: $f(s) = ||\mathbf{T} \mathbf{s}||_1 + \alpha ||\mathbf{s}||_1$. This method is based on dual ascent, which consists of simplifying the primary optimization problem into several subproblems for which the objective is to have analytical solutions. Treating each term separately and iteratively gives rise to the alternating direction method of multipliers (ADMM).
+
+**Introducing new variables**  
+To implement ADMM, we introduce new variables to the initial problem: $\mathbf{z} = \mathbf{T} \mathbf{s}, \mathbf{y} = \mathbf{s}$. We then need to add terms that translate these constraints and integrate them into the cost function as a penalty term.
+
+**Incorporating constraints and Lagrange multipliers**  
+To account for these constraints, we add two more Lagrange multipliers: $\mathbf{u}^T (\mathbf{z} - \mathbf{T} \mathbf{s})$ and $\mathbf{v}^T (\mathbf{y} - \mathbf{s})$ (we minimize the difference between the terms). Finally, to increase the robustness of the method and accelerate its convergence, we introduce the corresponding augmented Lagrangian multipliers: $\frac{\rho}{2} ||\mathbf{z} - \mathbf{T} \mathbf{s}||_2^2$ and $\frac{\rho}{2} ||\mathbf{y} - \mathbf{s}||_2^2$.
+
+**The Lagrangian function**
+The expression of the problem including all the constraints can be illustrated by the following Lagrangian function:
+
+$$ L(s, z, y, u, v) = \frac{1}{2} ||\mathbf{x} - \mathbf{A}s||_2^2 + \lambda (||\mathbf{z}||_1 + \alpha||\mathbf{y}||_1) + \mathbf{u}^T (\mathbf{z} - \mathbf{T}s) + \mathbf{v}^T (\mathbf{y} - s) + \frac{\rho}{2} ||\mathbf{z} - \mathbf{T}s||_2^2 + \frac{\rho}{2} ||\mathbf{y} - s||_2^2 $$
+
+**Solving the optimization problem**  
+The idea is now to solve this optimization problem by alternating over the 5 variables. We initialize these variables to 0 (we want sparse solutions, so we initialize them with the null vector) and solve the following subproblems of optimization:
+
+- s = \argmin_s L(s, z, y, u, v) (1)
+- z = \argmin_z L(s, z, y, u, v) (2)
+- y = \argmin_y L(s, z, y, u, v) (3)
+- u = \argmax_u L(s, z, y, u, v) (4)
+- v = \argmax_v L(s, z, y, u, v) (5)
+
+**Subproblem (1): Update of s** 
+The Lagrangian for s is:
+
+$$ L(s) = \frac{1}{2} ||\mathbf{x} - \mathbf{A}s||_2^2 + \lambda (||\mathbf{z}||_1 + \alpha||\mathbf{y}||_1) + \mathbf{u}^T (\mathbf{z} - \mathbf{T}s) + \mathbf{v}^T (\mathbf{y} - s) + \frac{\rho}{2} ||\mathbf{z} - \mathbf{T}s||_2^2 + \frac{\rho}{2} ||\mathbf{y} - s||_2^2 $$
+
+$$ L(s) = \frac{1}{2} \mathbf{x}^T \mathbf{x} - \mathbf{s}^T \mathbf{A}^T \mathbf{x} + \frac{1}{2} \mathbf{s}^T \mathbf{A}^T \mathbf{A}s + \mathbf{u}^T (\mathbf{z} - \mathbf{T}s) + \mathbf{v}^T (\mathbf{y} - s) + \frac{\rho}{2} (\mathbf{z} - \mathbf{T}s)^T (\mathbf{z} - \mathbf{T}s) + \frac{\rho}{2} (\mathbf{y} - s)^T (\mathbf{y} - s)$$
+
+Expanding this expression and taking the derivative with respect to s yields:
+
+$$ \delta L(s) / \delta s = -\mathbf{A}^T \mathbf{x} + \mathbf{A}^T \mathbf{A}s - \mathbf{T}^T \mathbf{u} - \mathbf{v} - \rho \mathbf{T}^T \mathbf{z} + \rho \mathbf{T}^T \mathbf{T}s - \rho \mathbf{y} + \rho \mathbf{s} = 0 $$
+
+Rearranging the terms, we get:
+
+$$ (\mathbf{A}^T \mathbf{A} + \rho(\mathbf{T}^T \mathbf{T} + \mathbf{I}))s = \mathbf{A}^T \mathbf{x} + \mathbf{T}^T \mathbf{u} + \mathbf{v} + \rho \mathbf{T}^T \mathbf{z} + \rho \mathbf{y} $$
+
+Finally, solving for s, we obtain the update rule:
+
+$$ s^{(k+1)} = (\mathbf{A}^T \mathbf{A} + \rho(\mathbf{T}^T \mathbf{T} + \mathbf{I}))^{-1} (\mathbf{A}^T \mathbf{x} + \rho \mathbf{T}^T \mathbf{z}^{(k)} + \mathbf{T}^T \mathbf{u}^{(k)} + \rho \mathbf{y}^{(k)} + \mathbf{v}^{(k)}) $$
+
+**Subproblems (2) and (3): Soft thresholding**  
+(2) and (3) are of the form:
+
+$$ \min \frac{1}{2} ||\mathbf{x} - \mathbf{y}||_2^2 + \beta||\mathbf{x}||_1 $$ 
+
+$$ = \text{prox}_{\beta}(\mathbf{y}) $$
+
+The solution to these subproblems is known and analytical:
+
+$$ x_i = y_i |y_i| (|y_i| - \beta)^+ $$
+
+This corresponds to soft thresholding, which sets small values to 0 to obtain a sparse solution.
+
+**Updates for z and y**  
+Using the soft thresholding solution, we can update z and y:
+
+$$ z^{(k+1)} = \text{prox}_{\lambda/\rho}(\mathbf{T}s^{(k+1)} - \frac{1}{\rho} \mathbf{u}^{(k)}) $$
+
+$$ y^{(k+1)} = \text{prox}_{\lambda/\rho}(s^{(k+1)} - \frac{1}{\rho} \mathbf{v}^{(k)}) $$
+
+**Subproblems (4) and (5): Gradient ascent**  
+Subproblems (4) and (5) involve maximizing the Lagrangian to enforce the equality constraints. We use gradient ascent with the following gradients:
+
+$$ \delta L(u) \delta u = \mathbf{z} - \mathbf{Ts} $$
+
+$$ \delta L(v) \delta v = \mathbf{y} - \mathbf{s} $$
+
+The update rules for u and v are then:
+
+$$ u \leftarrow u + \rho(\mathbf{z} - \mathbf{Ts}) \Rightarrow u^{(k+1)} = u^{(k)} + \rho(\mathbf{z}^{(k+1)} - \mathbf{T}s^{(k+1)}) $$
+
+$$ v \leftarrow v + \rho(\mathbf{y} - \mathbf{s}) \Rightarrow v^{(k+1)} = v^{(k)} + \rho(\mathbf{y}^{(k+1)} - \mathbf{s}^{(k+1)}) $$
+
+**Implementation of the SISSY algorithm**  
+
+The matrix A in the SISSY algorithm is of size (91 × 19k), making the inversion of the term required for calculating $s^{(k+1)}$:
+
+$$ (A^T A + \rho(T^T T + I))^{-1} $$
+
+of size (19k × 19k) very complex to perform (complexity N^3). To address this computational challenge, we employ two simplifications:
+
+Inversion Lemma: We utilize the Inversion Lemma introduced earlier to calculate the inverse of a much smaller matrix, reducing computational complexity.
+Cholesky Decomposition: We apply Cholesky decomposition to determine the lower triangular matrix L such that $A = LL^T$. This allows us to efficiently compute $A^{-1}$.
+
+These simplifications drastically reduce the complexity from N^3 to 91^3, requiring only three lines of code to implement before updating the algorithm.
+
+Parameter setting and testing
+
+We set the number of iterations to 60 and evaluate the algorithm's performance based on the RSB (Relative Structural Balance) and the regularization parameter \lambda.
 
 **Lambda influence [Fig. 5](#fig5)**
 
